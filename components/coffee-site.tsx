@@ -18,6 +18,7 @@ import {
 } from "@/lib/favorites";
 import { sitePath } from "@/lib/paths";
 import { Icon } from "./icons";
+import { usePageMotion } from "./motion";
 
 const rubles = (price: number) =>
   new Intl.NumberFormat("ru-RU", {
@@ -45,6 +46,7 @@ const FAQ = [
 ];
 
 export default function CoffeeSite() {
+  usePageMotion();
   const [category, setCategory] = useState<Category>("all");
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<MenuSort>("default");
@@ -67,6 +69,26 @@ export default function CoffeeSite() {
   const menuHeading = useRef<HTMLHeadingElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const close = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMobileOpen(false);
+        document.querySelector<HTMLButtonElement>(".mobile-toggle")?.focus();
+      }
+    };
+    const desktop = window.matchMedia("(min-width: 761px)");
+    const resize = () => {
+      if (desktop.matches) setMobileOpen(false);
+    };
+    document.addEventListener("keydown", close);
+    desktop.addEventListener("change", resize);
+    return () => {
+      document.removeEventListener("keydown", close);
+      desktop.removeEventListener("change", resize);
+    };
+  }, [mobileOpen]);
 
   const refreshFavorites = useCallback(() => {
     try {
@@ -193,7 +215,13 @@ export default function CoffeeSite() {
     setCategory("all");
     setQuery("");
     setMobileOpen(false);
-    document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" });
+    document
+      .getElementById("menu")
+      ?.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "instant"
+          : "smooth",
+      });
     menuHeading.current?.focus({ preventScroll: true });
   }
   function resetFilters() {
@@ -283,52 +311,40 @@ export default function CoffeeSite() {
       </header>
 
       <main id="main">
-        <section className="hero container" aria-labelledby="hero-title">
-          <Image
-            className="hero-image"
-            src={sitePath("/images/hero.jpg")}
-            alt="Тёплая атмосфера кофейни и ароматный кофе"
-            fill
-            priority
-            sizes="(max-width: 760px) 100vw, 1400px"
-          />
-          <div className="hero-shade" />
-          <div className="hero-content">
-            <span className="eyebrow">У каждого дня есть свой ритм</span>
-            <h1 id="hero-title">
-              Давайте
-              <br />
-              сделаем
-              <br />
-              <em>паузу.</em>
-            </h1>
-            <p>
-              Любимый кофе. Что-нибудь к нему.
-              <br />И немного времени для себя.
-            </p>
-            <a
-              href="#menu"
-              className="button button-cream"
-              onClick={resetFilters}
-            >
-              Найти свой вкус
-              <Icon name="arrow" size={19} />
-            </a>
-          </div>
-          <div className="hero-bottom">
-            <span>КОФЕ / ВЫПЕЧКА / МАЛЕНЬКИЕ РАДОСТИ</span>
-            <span>
-              Можно просто не спешить <span aria-hidden="true">↘</span>
+        <section className="coffee-hero container" aria-labelledby="hero-title">
+          <div className="coffee-poster">
+            <span className="eyebrow">
+              Маленькая кофейня. Большая любовь к простому.
             </span>
+            <h1 id="hero-title">
+              Немного кофе.
+              <br />
+              <em>Больше радости.</em>
+            </h1>
+            <div className="coffee-invitation">
+              <p>
+                Любимый вкус, тёплая чашка
+                <br />и время, которое принадлежит вам.
+              </p>
+              <a href="#menu" className="button" onClick={resetFilters}>
+                Найти свой вкус <Icon name="arrow" size={19} />
+              </a>
+            </div>
           </div>
-          <div className="hero-stamp" aria-hidden="true">
-            <Icon name="sun" size={31} />
-            <span>
-              МЕСТО
-              <br />
-              ДЛЯ ВАШЕЙ
-              <br />
-              <em>паузы</em>
+          <div className="coffee-photo">
+            <Image
+              src={sitePath("/images/hero.jpg")}
+              alt="Три чашки кофе для маленькой паузы вместе"
+              fill
+              priority
+              sizes="(max-width: 760px) 100vw, 1280px"
+              className="coffee-poster-image"
+            />
+          </div>
+          <div className="coffee-photo-caption">
+            <span>КОФЕ / ВЫПЕЧКА / МАЛЕНЬКИЕ РАДОСТИ</span>
+            <span className="coffee-mark">
+              <Icon name="sun" size={20} /> С хорошим вкусом к жизни
             </span>
           </div>
         </section>

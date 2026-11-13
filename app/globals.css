@@ -13,6 +13,9 @@
   --blush: #eaddd1;
   --clay: #a96c51;
 }
+body:has(dialog[open]) {
+  overflow: hidden;
+}
 * {
   box-sizing: border-box;
 }
@@ -125,6 +128,7 @@ em {
 }
 .button:hover {
   background: #36161b;
+  transform: translateY(-2px);
 }
 .button svg {
   margin-left: auto;
@@ -1860,6 +1864,264 @@ em {
   html {
     scroll-behavior: auto;
   }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* A café poster: typography and photography each have their own space. */
+.coffee-hero {
+  padding-top: 28px;
+}
+.coffee-poster {
+  text-align: center;
+  padding: 16px 20px 40px;
+}
+.coffee-poster > .eyebrow {
+  font-size: 10px;
+  letter-spacing: 1.4px;
+}
+.coffee-poster h1 {
+  font-family: Georgia, serif;
+  font-size: clamp(58px, 7.8vw, 112px);
+  line-height: 1.01;
+  letter-spacing: -0.055em;
+  color: var(--wine);
+  margin: 24px 0 28px;
+  text-wrap: balance;
+}
+.coffee-poster h1 em {
+  color: #a15f46;
+}
+.coffee-invitation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 38px;
+}
+.coffee-invitation p {
+  font-size: 14px;
+  line-height: 1.7;
+  text-align: left;
+  color: var(--muted);
+}
+.coffee-invitation .button {
+  border-radius: 50px;
+  padding-inline: 25px;
+}
+.coffee-photo {
+  position: relative;
+  height: clamp(260px, 30vw, 430px);
+  overflow: hidden;
+  border-radius: 180px 180px 8px 8px;
+  background: #b8987b;
+}
+.coffee-poster-image {
+  object-fit: cover;
+  object-position: center 51%;
+}
+.coffee-photo-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 18px 4px;
+  color: var(--wine);
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+.coffee-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: Georgia, serif;
+  font-size: 16px;
+  letter-spacing: 0;
+  font-style: italic;
+}
+.coffee-mark svg {
+  animation: coffee-sun 12s linear 2;
+}
+.button {
+  transition:
+    background 0.22s,
+    transform 0.22s,
+    box-shadow 0.22s;
+}
+.heart-button {
+  transition:
+    transform 0.25s,
+    background 0.25s,
+    color 0.25s;
+}
+.heart-button[aria-pressed="true"] svg {
+  animation: coffee-heart 0.4s ease;
+}
+.faq-list summary > span {
+  transition: transform 0.24s;
+}
+.product-dialog[open] {
+  animation: coffee-dialog 0.28s ease both;
+}
+.menu-card {
+  animation: coffee-card 0.45s ease both;
+}
+.card-visual img {
+  transition: transform 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+@media (hover: hover) {
+  .card-visual:hover img {
+    transform: scale(1.045);
+  }
+  .heart-button:hover {
+    transform: scale(1.08);
+  }
+}
+@keyframes coffee-sun {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes coffee-heart {
+  50% {
+    transform: scale(1.25);
+  }
+}
+@keyframes coffee-dialog {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes coffee-card {
+  from {
+    opacity: 0.5;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 760px) {
+  .coffee-hero {
+    padding-top: 18px;
+  }
+  .coffee-poster {
+    padding: 10px 0 28px;
+  }
+  .coffee-poster > .eyebrow {
+    font-size: 9px;
+    max-width: 260px;
+    margin-inline: auto;
+    line-height: 1.7;
+  }
+  .coffee-poster h1 {
+    font-size: clamp(43px, 11vw, 72px);
+    letter-spacing: -0.05em;
+    line-height: 1.08;
+    margin: 20px 0 24px;
+  }
+  .coffee-invitation {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .coffee-invitation p {
+    text-align: center;
+    font-size: 13px;
+  }
+  .coffee-photo {
+    height: 260px;
+    border-radius: 90px 90px 6px 6px;
+  }
+  .coffee-photo-caption {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+    padding-block: 15px;
+    font-size: 8px;
+  }
+  .coffee-mark {
+    font-size: 15px;
+  }
+  .category-filters {
+    flex-wrap: wrap;
+  }
+  .category-filters button {
+    font-size: 11px;
+    min-height: 44px;
+  }
+  .heart-button {
+    width: 44px;
+    height: 44px;
+  }
+  .menu-grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .card-visual {
+    aspect-ratio: 1.55;
+  }
+  .card-content {
+    padding: 22px;
+  }
+  .card-title-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 20px;
+  }
+  .card-title-row h3 {
+    font-size: 27px;
+  }
+  .card-title-row > span {
+    font-size: 15px;
+  }
+  .card-content > p {
+    font-size: 13px;
+    min-height: 0;
+    margin-top: 12px;
+  }
+  .card-bottom {
+    flex-direction: row;
+    align-items: center;
+    margin-top: 20px;
+    font-size: 12px;
+  }
+  .card-bottom button {
+    font-size: 12px;
+    min-height: 44px;
+  }
+  .card-tag {
+    font-size: 9px;
+    max-width: calc(100% - 76px);
+  }
+  .favorites-banner {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .favorites-banner > .favorites-banner-copy {
+    grid-column: 1;
+  }
+  .banner-heart {
+    display: none;
+  }
+  .favorites-banner h2 {
+    font-size: clamp(34px, 9vw, 46px);
+  }
+  .footer-wordmark {
+    font-size: clamp(90px, 23vw, 150px);
+    letter-spacing: -0.05em;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
